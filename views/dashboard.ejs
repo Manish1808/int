@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="/api/auth/logout">Logout</a>
+<h2>Your Tasks</h2>
+<form action="/api/tasks" method="POST">
+  <input name="title" placeholder="Title" required />
+  <input name="description" placeholder="Description" />
+  <input name="dueDate" type="date" />
+  <button type="submit">Add Task</button>
+</form>
+
+<% tasks.forEach(task => { %>
+  <form action="/api/tasks/update/<%= task._id %>" method="POST">
+    <input name="title" value="<%= task.title %>" required />
+    <input name="description" value="<%= task.description %>" />
+    <input name="dueDate" type="date" value="<%= task.dueDate ? task.dueDate.toISOString().split('T')[0] : '' %>" />
+    <select name="status">
+      <option <%= task.status === "pending" ? "selected" : "" %>>pending</option>
+      <option <%= task.status === "in-progress" ? "selected" : "" %>>in-progress</option>
+      <option <%= task.status === "completed" ? "selected" : "" %>>completed</option>
+    </select>
+    <button type="submit">Update</button>
+    <a href="/api/tasks/delete/<%= task._id %>">Delete</a>
+  </form>
+<% }) %>
+
+</body>
+</html>
